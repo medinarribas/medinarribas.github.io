@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="theme-color" content="#33474d">
+	<title>Software a la intemperie</title>
+	<link rel="stylesheet" href="/css/style.css" />
+	
+      <link rel="alternate" href="/atom.xml" title="Software a la intemperie" type="application/atom+xml">
+    
+</head>
+
+<body>
+
+	<header class="header">
+		<nav class="header__nav">
+			
+				<a href="/archives" class="header__link">Archive</a>
+			
+				<a href="/tags" class="header__link">Tags</a>
+			
+				<a href="/atom.xml" class="header__link">RSS</a>
+			
+		</nav>
+		<h1 class="header__title"><a href="/">Software a la intemperie</a></h1>
+		<h2 class="header__subtitle">Emilio Medina</h2>
+	</header>
+
+	<main>
+		
+
+
+
+	<article>
+	
+		<h1><a href="/2016/11/21/hello-world/">Tests de salud con .Net y PowerShell</a></h1>
+	
+	<div class="article__infos">
+		<span class="article__date">2016-11-21</span><br />
+		
+		
+	</div>
+
+	
+
+	
+		<p>En este post voy a mostrarte la implementación de un sistema de tests de salud para servicios web.</p>
+<p>Del lado del servidor hemos utilizado una clase llamada <em>HealthChecker</em> que se encarga de realizar el chequeo completo de la aplicación. Para ello se configura con una serie de <em>HealthTest</em> que pueden configurarse para cada servicio desde el fichero Global.asax del proyecto. Esto nos permite definir una batería de tests genéricos para utilizar por varios servicios o específicos en función de las necesidades de cada uno de ellos.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    ...</div><div class="line">    ...</div><div class="line">    ConfigureHealthChecker();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ConfigureHealthChecker</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    HealthChecker</div><div class="line">        .Initialize()</div><div class="line">        .Adding(<span class="keyword">new</span> DbConnectionHealthTest())</div><div class="line">        .Adding(<span class="keyword">new</span> FileSystemHealthTest())</div><div class="line">        .Adding(<span class="keyword">new</span> TwitterApiConnectionHealthTest());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>La implementación del <em>HealthChecker</em> es muy sencilla, únicamente contiene un launcher con la lista de <em>HealthTest</em> y un método para invocarlo, que es, en última instancia, quien se encarga de recorrer la lista y lanzar cada test.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">class</span> <span class="title">HealthChecker</span> &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> HealthTestsLauncher healthTestsLauncher;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HealthTestsLauncher <span class="title">Initialize</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        healthTestsLauncher = <span class="keyword">new</span> HealthTestsLauncher();</div><div class="line">        <span class="keyword">return</span> healthTestsLauncher;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> HealthStatus <span class="title">Execute</span>(<span class="params"></span>) </span>&#123;</div><div class="line">	    <span class="keyword">return</span> healthTestsLauncher.Check();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HealthTestsLauncher</span> &#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">readonly</span> List tests = <span class="keyword">new</span> List();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> HealthTestsLauncher <span class="title">Adding</span>(<span class="params">HealthTest healthTest</span>) </span>&#123;</div><div class="line">        tests.Add(healthTest);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">this</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> HealthStatus <span class="title">Check</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">if</span> (!tests.Any()) <span class="keyword">return</span> HealthStatus.TestsNotSet;</div><div class="line">        tests.ToList().ForEach(c =&gt; c.Check());</div><div class="line">        <span class="keyword">return</span> HealthStatus.Ok;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Cada test de salud concreto solo debe cumplir la interfaz y lanzar una excepción con el <em>HealthStatus</em> específico cuando falla.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">DbConnectionHealthTest</span> : <span class="title">HealthTest</span> &#123;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">Check</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">var</span> connectionProvider = <span class="keyword">new</span> ConnectionProvider(<span class="keyword">new</span> DatabaseConnectorCentral());</div><div class="line">        <span class="keyword">try</span> &#123;</div><div class="line">        	connectionProvider.EstablishConnection();</div><div class="line">        	connectionProvider.Close();</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">catch</span> &#123;</div><div class="line">        	<span class="keyword">throw</span> <span class="keyword">new</span> HealthStatusException &#123; HealthStatus = HealthStatus.DbConnectionFailed &#125;;</div><div class="line">    	&#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Un controlador genérico es el encargado de invocar el HealthChecker con los tests de salud de la infraestructura de nuestra API.</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">HealthController</span> : <span class="title">ApiController</span> &#123;</div><div class="line">    [HttpGet, Route(<span class="string">"howareyou"</span>)]</div><div class="line">    <span class="function"><span class="keyword">public</span> HealthStatus <span class="title">HealthCheck</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="keyword">return</span> HealthChecker.Execute();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Para la llamada a la url de los tests de salud estamos utilizando <a href="https://github.com/pester/Pester" target="_blank" rel="external">Pester</a>. Mediante un script de <em>PowerShell</em> podemos invocar el test y que <em>Pester</em> nos devuelva rojo o verde en función de la respuesta.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">It <span class="string">"is healthy"</span> &#123;</div><div class="line">    <span class="variable">$url</span> = <span class="string">"http://api.dominio.com/howareyou"</span></div><div class="line">    Get-HttpContent <span class="variable">$url</span> | Should Be <span class="string">'Ok'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> Get-HttpContent &#123;</div><div class="line">    <span class="keyword">param</span>( <span class="variable">$target</span> )</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="variable">$res</span> = <span class="built_in">Invoke-WebRequest</span> -Uri <span class="variable">$target</span> -UseBasicParsing -ErrorAction SilentlyContinue</div><div class="line">        <span class="variable">$res</span>.Content</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="variable">$_</span>.Exception.Message</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+	
+
+	
+
+</article>
+
+
+
+
+
+
+	<span class="different-posts">📕 end of posts 📕</span>
+
+
+	</main>
+
+	<footer class="footer">
+	<div class="footer-content">
+		
+	      <div class="footer__element">
+	<p>Hi there, <br />welcome to my Blog glad you found it. Have a look around, will you?</p>
+</div>
+
+	    
+	      <div class="footer__element">
+	<h5>Check out</h5>
+	<ul class="footer-links">
+		<li class="footer-links__link"><a href="/archives">Archive</a></li>
+		
+		  <li class="footer-links__link"><a href="/atom.xml">RSS</a></li>
+	    
+		<li class="footer-links__link"><a href="/about">about page</a></li>
+		<li class="footer-links__link"><a href="/tags">Tags</a></li>
+		<li class="footer-links__link"><a href="/categories">Categories</a></li>
+	</ul>
+</div>
+
+	    
+
+		<div class="footer-credit">
+			<span>© 2016 Emilio Medina | Powered by <a href="https://hexo.io/">Hexo</a> | Theme <a href="https://github.com/HoverBaum/meilidu-hexo">MeiliDu</a></span>
+		</div>
+
+	</div>
+
+
+</footer>
+
+
+
+</body>
+
+</html>
