@@ -46,7 +46,7 @@
 	
 
 	
-		<p>En este post voy a mostrarte la implementación de un sistema de tests de salud para servicios web.</p>
+		<p>En este post voy a mostrarte la implementación de un sistema de tests de salud para servicios web que hemos implementado <a href="http://ronnyancorini.es" target="_blank" rel="external">Ronny Ancorini</a> y éste que escribe. Gracias <a href="http://www.modestosanjuan.com" target="_blank" rel="external">Modesto San Juan</a> por la inspiración :).</p>
 <p>Del lado del servidor hemos utilizado una clase llamada <em>HealthChecker</em> que se encarga de realizar el chequeo completo de la aplicación. Para ello se configura con una serie de <em>HealthTest</em> que pueden configurarse para cada servicio desde el fichero Global.asax del proyecto. Esto nos permite definir una batería de tests genéricos para utilizar por varios servicios o específicos en función de las necesidades de cada uno de ellos.</p>
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">Application_Start</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    ...</div><div class="line">    ...</div><div class="line">    ConfigureHealthChecker();</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">ConfigureHealthChecker</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    HealthChecker</div><div class="line">        .Initialize()</div><div class="line">        .Adding(<span class="keyword">new</span> DbConnectionHealthTest())</div><div class="line">        .Adding(<span class="keyword">new</span> FileSystemHealthTest())</div><div class="line">        .Adding(<span class="keyword">new</span> TwitterApiConnectionHealthTest());</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>La implementación del <em>HealthChecker</em> es muy sencilla, únicamente contiene un launcher con la lista de <em>HealthTest</em> y un método para invocarlo, que es, en última instancia, quien se encarga de recorrer la lista y lanzar cada test.</p>
@@ -63,27 +63,6 @@
 	
 
 </article>
-
-<div id="disqus_thread"></div>
-<script>
-
-/**
-*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
-/*
-var disqus_config = function () {
-this.page.url = medinarribas;  // Replace PAGE_URL with your page's canonical URL variable
-this.page.identifier = http://medinarribas.github.io/2016/11/21/hello-world/; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-};
-*/
-(function() { // DON'T EDIT BELOW THIS LINE
-var d = document, s = d.createElement('script');
-s.src = '//medinarribas.disqus.com/embed.js';
-s.setAttribute('data-timestamp', +new Date());
-(d.head || d.body).appendChild(s);
-})();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
 
 
@@ -123,6 +102,20 @@ s.setAttribute('data-timestamp', +new Date());
 		</div>
 
 	</div>
+
+
+<script>
+  var disqus_shortname = 'medinarribas';
+  
+  (function(){
+    var dsq = document.createElement('script');
+    dsq.type = 'text/javascript';
+    dsq.async = true;
+    dsq.src = '//' + disqus_shortname + '.disqus.com/count.js';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+
 
 
 </footer>
