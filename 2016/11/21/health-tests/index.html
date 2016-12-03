@@ -13,7 +13,6 @@
 </head>
 
 <body>
-
 	<header class="header">
 		<nav class="header__nav">
 			
@@ -29,10 +28,14 @@
 	<main>
 		<article>
 	
-		<h1>Tests de salud con .Net y PowerShell</h1>
+	<h1>
+		Tests de salud con .Net y PowerShell
+	</h1>
 	
 	<div class="article__infos">
-		<span class="article__date">2016-11-21</span><br />
+		<span class="article__date">
+			2016-11-21
+		</span><br />
 		
 		
 	</div>
@@ -53,14 +56,28 @@
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">It <span class="string">"is healthy"</span> &#123;</div><div class="line">    <span class="variable">$url</span> = <span class="string">"http://api.dominio.com/howareyou"</span></div><div class="line">    Get-HttpContent <span class="variable">$url</span> | Should Be <span class="string">'Ok'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> Get-HttpContent &#123;</div><div class="line">    <span class="keyword">param</span>( <span class="variable">$target</span> )</div><div class="line">    <span class="keyword">try</span> &#123;</div><div class="line">        <span class="variable">$res</span> = <span class="built_in">Invoke-WebRequest</span> -Uri <span class="variable">$target</span> -UseBasicParsing -ErrorAction SilentlyContinue</div><div class="line">        <span class="variable">$res</span>.Content</div><div class="line">    &#125; <span class="keyword">catch</span> &#123;</div><div class="line">        <span class="variable">$_</span>.Exception.Message</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 
 	
-
 	
-		<span class="different-posts"><a href="/2016/11/21/hello-world/" onclick="window.history.go(-1); return false;">⬅️ Go back </a></span>
-
+		<span class="different-posts"><a href="/2016/11/21/health-tests/" onclick="window.history.go(-1); return false;">⬅️ Go back </a></span>
 	
 
+	
+	<div id="disqus_thread"></div>
+	<script>
+		var disqus_shortname = 'medinarribas';
+		var disqus_config = function () {
+			this.page.url = 'http://medinarribas.github.io/2016/11/21/health-tests//2016/11/21/health-tests/';
+			this.page.identifier = 'Tests de salud con .Net y PowerShell';
+		};
+		(function() {
+				var d = document;
+				var s = d.createElement('script');
+				s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+				s.setAttribute('data-timestamp', + new Date());
+				(d.head || d.body).appendChild(s);
+		})();
+  </script>
+	
 </article>
-
 	</main>
 
 	<footer class="footer">
@@ -70,7 +87,7 @@
 	<p>Hi there, <br />welcome to my Blog glad you found it. Have a look around, will you?</p>
 </div>
 
-	    
+	  
 	      <div class="footer__element">
 	<h5>Check out</h5>
 	<ul class="footer-links">
@@ -78,40 +95,18 @@
 		
 		  <li class="footer-links__link"><a href="/atom.xml">RSS</a></li>
 	    
-		<li class="footer-links__link"><a href="/about">about page</a></li>
-		<li class="footer-links__link"><a href="/tags">Tags</a></li>
-		<li class="footer-links__link"><a href="/categories">Categories</a></li>
+		<!--<li class="footer-links__link"><a href="/about">about page</a></li>-->
+		<!--<li class="footer-links__link"><a href="/tags">Tags</a></li>-->
+		<!--<li class="footer-links__link"><a href="/categories">Categories</a></li>-->
 	</ul>
 </div>
 
-	    
-
+	  
 		<div class="footer-credit">
 			<span>© 2016 Emilio Medina | Powered by <a href="https://hexo.io/">Hexo</a> | Theme <a href="https://github.com/HoverBaum/meilidu-hexo">MeiliDu</a></span>
 		</div>
-
 	</div>
-
-
-<script>
-  var disqus_shortname = 'medinarribas';
-  
-  var disqus_url = 'http://medinarribas.github.io/2016/11/21/hello-world/';
-  
-  (function(){
-    var dsq = document.createElement('script');
-    dsq.type = 'text/javascript';
-    dsq.async = true;
-    dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-  })();
-</script>
-
-
-
 </footer>
-
-
 
 </body>
 
