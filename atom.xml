@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://medinarribas.github.io/"/>
-  <updated>2016-12-03T10:57:36.000Z</updated>
+  <updated>2016-12-05T22:22:03.115Z</updated>
   <id>http://medinarribas.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://medinarribas.github.io/2016/11/21/health-tests/"/>
     <id>http://medinarribas.github.io/2016/11/21/health-tests/</id>
     <published>2016-11-21T22:29:34.925Z</published>
-    <updated>2016-12-03T10:57:36.000Z</updated>
+    <updated>2016-12-05T22:22:03.115Z</updated>
     
     <content type="html"><![CDATA[<p>En este post voy a mostrarte la implementación de un sistema de tests de salud para servicios web que hemos implementado <a href="http://ronnyancorini.es" target="_blank" rel="external">Ronny Ancorini</a> y éste que escribe. Gracias <a href="http://www.modestosanjuan.com" target="_blank" rel="external">Modesto San Juan</a> por la inspiración :).</p>
 <p>Del lado del servidor hemos utilizado una clase llamada <em>HealthChecker</em> que se encarga de realizar el chequeo completo de la aplicación. Para ello se configura con una serie de <em>HealthTest</em> que pueden configurarse para cada servicio desde el fichero Global.asax del proyecto. Esto nos permite definir una batería de tests genéricos para utilizar por varios servicios o específicos en función de las necesidades de cada uno de ellos.</p>
@@ -41,6 +41,14 @@
     
     </summary>
     
+    
+      <category term="powershell" scheme="http://medinarribas.github.io/tags/powershell/"/>
+    
+      <category term="aspnet" scheme="http://medinarribas.github.io/tags/aspnet/"/>
+    
+      <category term="testing" scheme="http://medinarribas.github.io/tags/testing/"/>
+    
+      <category term="webapi" scheme="http://medinarribas.github.io/tags/webapi/"/>
     
   </entry>
   
