@@ -32,8 +32,68 @@
 	<article>
 	
 	<h1>
-		<a href="/2016/11/21/health-tests/">
-			Tests de salud con .Net y PowerShell
+		<a href="/2016/12/05/Tests-de-contrato-para-web-services-con-Pester/">
+			Tests de contrato para web services con Pester
+		</a>
+	</h1>
+	
+	<div class="article__infos">
+		<span class="article__date">
+			2016-12-05
+		</span><br />
+		
+		
+		<span class="article__tags">
+			<a class="article__tag-link" href="/tags/pester/">pester</a> <a class="article__tag-link" href="/tags/powershell/">powershell</a> <a class="article__tag-link" href="/tags/testing/">testing</a>
+		</span>
+		
+	</div>
+
+	
+
+	
+		<p>En el post <a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell">Tests de salud con ASP.Net y PowerShell</a> explicaba como utilizar <em>Pester</em> para crear un test a partir de la llamada a un controlador de estado de salud de un servicio web.</p>
+<p>Utilizando la misma filosofía podemos utilizar esta misma librería de testing para crear tests de contrato sobre un servicio web.</p>
+<p>Por ejemplo, para el siguiente controlador</p>
+<figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[HttpGet, Route(<span class="string">"models"</span>)]</div><div class="line"><span class="function"><span class="keyword">public</span> IEnumerable&lt;VehicleModel&gt; <span class="title">GetModels</span>(<span class="params">[FromUri] <span class="keyword">string</span> brandName</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> service = Factory.VehicleCatalogRepository();</div><div class="line">    <span class="keyword">return</span> service.GetModelsBy(brandName);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VehicleModel</span> &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> ModelId &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Description &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> Active &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> IsAVersion &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> Dictionary&lt;<span class="keyword">string</span>, Category&gt; Categories &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>vemos que se devuelve una lista de objetos <em>__VehicleModel</em>. Para crear un test de contrato para este controlador podemos utilizar Pester de la siguiente manera.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Describe <span class="string">"Vehicle Model Contract"</span> &#123;</div><div class="line"></div><div class="line">    It <span class="string">"get models"</span> &#123;</div><div class="line">        <span class="variable">$url</span> = <span class="string">"https://tu.dominio.com/v1/models?brandName=VOLKSWAGEN"</span></div><div class="line">        <span class="variable">$dummyToken</span> = <span class="number">0123456789</span></div><div class="line">        <span class="variable">$headers</span> = @&#123;<span class="string">"Client-Token"</span>=<span class="variable">$dummyToken</span>; <span class="string">"Content-Type"</span>=<span class="string">"application/json"</span> &#125;</div><div class="line"></div><div class="line">        <span class="variable">$response</span> = <span class="built_in">Invoke-RestMethod</span> -Uri <span class="variable">$url</span> -Method <span class="variable">$method</span> -Headers <span class="variable">$headers</span> -ErrorAction SilentlyContinue</div><div class="line"></div><div class="line">        <span class="variable">$response</span>.Count | Should Not Be <span class="number">0</span></div><div class="line">        <span class="variable">$response</span>[<span class="number">0</span>] | Should HasOnlyProperties (<span class="string">'ModelId'</span>, <span class="string">'Description'</span>, <span class="string">'Active'</span>, <span class="string">'IsAVersion'</span>, <span class="string">'Categories'</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>En mi caso se ha implementado <em>HasOnlyProperties</em> como un Assert de Pester para tener información detallada en caso de rojo y que se muestren las propiedades de la respuesta en el mensaje en caso de que el test no pase.</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#HasOnlyProperties</span></div><div class="line"><span class="keyword">function</span> PesterHasOnlyProperties(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">    <span class="variable">$properties</span> = <span class="keyword">foreach</span> (<span class="variable">$property</span> <span class="keyword">in</span> <span class="variable">$value</span>.PSObject.Properties) &#123; <span class="variable">$property</span>.Name  &#125;</div><div class="line">    <span class="variable">$differences</span> = <span class="built_in">Compare-Object</span> <span class="variable">$properties</span> <span class="variable">$expected</span></div><div class="line">    <span class="keyword">if</span> (<span class="variable">$differences</span>) &#123;<span class="keyword">return</span> <span class="literal">$false</span>&#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">$true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> PesterHasOnlyPropertiesFailureMessage(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">    <span class="variable">$properties</span> = <span class="variable">$value</span>.PSObject.Properties.Name</div><div class="line">    <span class="keyword">return</span> <span class="string">"Expected: &#123;<span class="variable">$expected</span>&#125;`nBut was:  &#123;<span class="variable">$properties</span>&#125;"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> NotPesterHasOnlyPropertiesFailureMessage(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Expected: value differs in the following properties: <span class="variable">$differences</span>"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Por último solo nos falta invocar el test</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Invoke-Pester -PassThru -OutputFormat NUnitXml -Script @&#123; Path = <span class="variable">$path_of_the_test</span>; &#125;</div></pre></td></tr></table></figure>
+
+	
+	
+
+	
+<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script>
+    var disqus_shortname = 'medinarribas';
+    var disqus_config = function () {
+        this.page.url = 'http://medinarribas.github.io/2016/12/05/Tests-de-contrato-para-web-services-con-Pester//2016/12/05/Tests-de-contrato-para-web-services-con-Pester/';
+        this.page.identifier = 'Tests de contrato para web services con Pester';
+    };
+    (function() {
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+	
+</article>
+
+	<article>
+	
+	<h1>
+		<a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/">
+			Tests de salud con ASP.Net y PowerShell
 		</a>
 	</h1>
 	
@@ -44,7 +104,7 @@
 		
 		
 		<span class="article__tags">
-			<a class="article__tag-link" href="/tags/aspnet/">aspnet</a> <a class="article__tag-link" href="/tags/powershell/">powershell</a> <a class="article__tag-link" href="/tags/testing/">testing</a> <a class="article__tag-link" href="/tags/webapi/">webapi</a>
+			<a class="article__tag-link" href="/tags/aspnet/">aspnet</a> <a class="article__tag-link" href="/tags/pester/">pester</a> <a class="article__tag-link" href="/tags/powershell/">powershell</a> <a class="article__tag-link" href="/tags/testing/">testing</a> <a class="article__tag-link" href="/tags/webapi/">webapi</a>
 		</span>
 		
 	</div>
@@ -68,21 +128,25 @@
 	
 
 	
-	<div id="disqus_thread"></div>
-	<script>
-		var disqus_shortname = 'medinarribas';
-		var disqus_config = function () {
-			this.page.url = 'http://medinarribas.github.io/2016/11/21/health-tests//2016/11/21/health-tests/';
-			this.page.identifier = 'Tests de salud con .Net y PowerShell';
-		};
-		(function() {
-				var d = document;
-				var s = d.createElement('script');
-				s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-				s.setAttribute('data-timestamp', + new Date());
-				(d.head || d.body).appendChild(s);
-		})();
-  </script>
+<div id="disqus_thread">
+    <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+
+<script>
+    var disqus_shortname = 'medinarribas';
+    var disqus_config = function () {
+        this.page.url = 'http://medinarribas.github.io/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell//2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/';
+        this.page.identifier = 'Tests de salud con ASP.Net y PowerShell';
+    };
+    (function() {
+            var d = document;
+            var s = d.createElement('script');
+            s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', + new Date());
+            (d.head || d.body).appendChild(s);
+    })();
+</script>
+
 	
 </article>
 

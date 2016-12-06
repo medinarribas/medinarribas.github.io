@@ -26,59 +26,43 @@
 	</header>
 
 	<main>
-		
+		<h1>Archive</h1>
 
-<h1>#powershell</h1>
 
 
 
 <ul class="archive">
-		<li class="archive__year archive__expendable archive__expendable_disabled">
+	
+	
+		<li class="archive__year archive__expendable ">
+			<span>2016</span>
 			<ul>
-			
 				
-					
-					
+					<li class="archive__month archive__expendable">
+						<span>December</span>
+						<ul>
+							
+								<li class="archive__entry"><a href="/2016/12/05/Tests-de-contrato-para-web-services-con-Pester/">Tests de contrato para web services con Pester</a></li>
+							
+						</ul>
+					</li>
 
 				
-					
-					
-						<li class="archive__entry"><a href="/2016/12/05/Tests-de-contrato-para-web-services-con-Pester/">Tests de contrato para web services con Pester</a></li>
-					
-
-				
-					
-					
-
-				
-			
-				
-					
-					
-
-				
-					
-					
-						<li class="archive__entry"><a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/">Tests de salud con ASP.Net y PowerShell</a></li>
-					
-
-				
-					
-					
-
-				
-					
-					
-
-				
-					
-					
-
-				
-			
 			</ul>
 		</li>
+		
+	
 </ul>
+
+<script>
+	const expandables = document.querySelectorAll('.archive__expendable')
+	for(let i = 0; i < expandables.length; i++) {
+		expandables[i].addEventListener('click', (e) => {
+			e.stopPropagation()
+			expandables[i].classList.toggle('archive__expendable_collapsed')
+		})
+	}
+</script>
 
 	</main>
 
