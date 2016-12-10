@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://medinarribas.github.io/"/>
-  <updated>2016-12-06T00:16:35.413Z</updated>
+  <updated>2016-12-10T12:15:39.857Z</updated>
   <id>http://medinarribas.github.io/</id>
   
   <author>
@@ -16,11 +16,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Tests de contrato para web services con Pester</title>
-    <link href="http://medinarribas.github.io/2016/12/05/Tests-de-contrato-para-web-services-con-Pester/"/>
-    <id>http://medinarribas.github.io/2016/12/05/Tests-de-contrato-para-web-services-con-Pester/</id>
+    <title>Tests de contrato para web services utilizando Pester</title>
+    <link href="http://medinarribas.github.io/2016/12/05/Tests-de-contrato-para-web-services-utilizando-Pester/"/>
+    <id>http://medinarribas.github.io/2016/12/05/Tests-de-contrato-para-web-services-utilizando-Pester/</id>
     <published>2016-12-05T22:32:31.000Z</published>
-    <updated>2016-12-06T00:16:35.413Z</updated>
+    <updated>2016-12-10T12:15:39.857Z</updated>
     
     <content type="html"><![CDATA[<p>En el post <a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell">Tests de salud con ASP.Net y PowerShell</a> comentaba como utilizar <em>Pester</em> para crear un test a partir de la llamada a un controlador de estado de salud de un servicio web.</p>
 <p>Utilizando la misma filosofía podemos utilizar esta misma librería de testing para crear tests de contrato sobre un servicio web.</p>
@@ -54,7 +54,7 @@
     <link href="http://medinarribas.github.io/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/"/>
     <id>http://medinarribas.github.io/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/</id>
     <published>2016-11-21T22:29:34.925Z</published>
-    <updated>2016-12-06T00:25:00.364Z</updated>
+    <updated>2016-12-10T12:16:06.323Z</updated>
     
     <content type="html"><![CDATA[<p>En este post voy a mostrarte la implementación de un sistema de tests de salud para servicios web que hemos implementado <a href="http://ronnyancorini.es" target="_blank" rel="external">Ronny Ancorini</a> y éste que escribe. Gracias <a href="http://www.modestosanjuan.com" target="_blank" rel="external">Modesto San Juan</a> por la inspiración :).</p>
 <p>Del lado del servidor hemos utilizado una clase llamada <em>HealthChecker</em> que se encarga de realizar el chequeo completo de la aplicación. Para ello se configura con una serie de <em>HealthTest</em> que pueden configurarse para cada servicio desde el fichero Global.asax del proyecto. Esto nos permite definir una batería de tests genéricos para utilizar por varios servicios o específicos en función de las necesidades de cada uno de ellos.</p>
@@ -80,13 +80,15 @@
     
       <category term="testing" scheme="http://medinarribas.github.io/tags/testing/"/>
     
+      <category term="aspnet" scheme="http://medinarribas.github.io/tags/aspnet/"/>
+    
+      <category term="webapi" scheme="http://medinarribas.github.io/tags/webapi/"/>
+    
       <category term="powershell" scheme="http://medinarribas.github.io/tags/powershell/"/>
     
       <category term="pester" scheme="http://medinarribas.github.io/tags/pester/"/>
     
-      <category term="aspnet" scheme="http://medinarribas.github.io/tags/aspnet/"/>
-    
-      <category term="webapi" scheme="http://medinarribas.github.io/tags/webapi/"/>
+      <category term="devops" scheme="http://medinarribas.github.io/tags/devops/"/>
     
   </entry>
   
