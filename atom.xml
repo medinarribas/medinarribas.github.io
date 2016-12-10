@@ -80,13 +80,13 @@
     
       <category term="testing" scheme="http://medinarribas.github.io/tags/testing/"/>
     
-      <category term="powershell" scheme="http://medinarribas.github.io/tags/powershell/"/>
-    
-      <category term="pester" scheme="http://medinarribas.github.io/tags/pester/"/>
-    
       <category term="aspnet" scheme="http://medinarribas.github.io/tags/aspnet/"/>
     
       <category term="webapi" scheme="http://medinarribas.github.io/tags/webapi/"/>
+    
+      <category term="powershell" scheme="http://medinarribas.github.io/tags/powershell/"/>
+    
+      <category term="pester" scheme="http://medinarribas.github.io/tags/pester/"/>
     
       <category term="devops" scheme="http://medinarribas.github.io/tags/devops/"/>
     
