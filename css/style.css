@@ -1017,6 +1017,53 @@ pre .javascript .function {
 .archive__expendable.archive__expendable_disabled:before {
   content: "";
 }
+.post-preview > a {
+  color: gray-dark;
+}
+.post-preview > a:hover,
+.post-preview > a:focus {
+  text-decoration: none;
+  color: brand-primary;
+}
+.post-preview > a > .post-title {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.post-preview > a > .post-title.archive {
+  font-size: 22px;
+}
+.post-preview > a > .post-subtitle {
+  margin: 0;
+  font-weight: 300;
+  margin-bottom: 10px;
+  text-align: center;
+}
+.post-preview > a h4 {
+  color: #3c4447;
+}
+.post-preview > .post-meta {
+  color: #a4a4a4;
+  font-style: italic;
+  margin-top: 0;
+  border-bottom: 1px solid rgba(0,0,0,0.15);
+  color: $body-color;
+  padding: 20px;
+  text-align: center;
+}
+.post-preview > .post-meta.archive {
+  font-size: 16px;
+}
+.post-preview > .post-meta > a {
+  text-decoration: none;
+  color: gray-dark;
+}
+.post-preview > .post-meta > a:hover,
+.post-preview > .post-meta > a:focus {
+  color: brand-primary;
+  text-decoration: underline;
+}
 body,
 html {
   padding: 0;

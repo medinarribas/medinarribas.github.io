@@ -16,6 +16,8 @@
 	<header class="header">
 		<nav class="header__nav">
 			
+				<a href="/" class="header__link">Index</a>
+			
 				<a href="/archives" class="header__link">Archive</a>
 			
 				<a href="/atom.xml" class="header__link">RSS</a>
@@ -24,22 +26,63 @@
 		<h1 class="header__title"><a href="/">Software a la intemperie</a></h1>
 		<h2 class="header__subtitle">Emilio Medina</h2>
 	</header>
-
 	<main>
+		<span class="row">
+	<span class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
 		
+			<div class="post-preview">
+    <a href="/2016/12/05/Tests-de-contrato-para-web-services-utilizando-Pester/">
+        <h2 class="post-title">
+            Tests de contrato para web services utilizando Pester
+        </h2>
+        
+            <h4 class="post-subtitle">
+                o cómo utilizar PowerShell para desarrollar tus tests de contrato
+            </h4>
+        
+    </a>
+    <p class="post-meta">
+        Publicado el 05-12-2016
+    </p>
+</div>
+		
+			<div class="post-preview">
+    <a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/">
+        <h2 class="post-title">
+            Tests de salud con ASP.Net y PowerShell
+        </h2>
+        
+            <h4 class="post-subtitle">
+                controla el estado actual de tus servicios mediante testing
+            </h4>
+        
+    </a>
+    <p class="post-meta">
+        Publicado el 21-11-2016
+    </p>
+</div>
+		
+		<ul class="pager">
+    
+    
+</ul>
+	</span>
+	
+		<!--<span class="different-posts">📕 end of posts 📕</span>-->
+	
+</span>
 
+<!--
 
 	<article>
 	
 	<h1>
-		<a href="/2016/12/05/Tests-de-contrato-para-web-services-utilizando-Pester/">
-			Tests de contrato para web services utilizando Pester
-		</a>
+		<a href="/2016/12/05/Tests-de-contrato-para-web-services-utilizando-Pester/">Tests de contrato para web services utilizando Pester</a>
 	</h1>
 	
 	<div class="article__infos">
 		<span class="article__date">
-			2016-12-05
+			05-12-2016
 		</span><br />
 		
 		
@@ -58,7 +101,7 @@
 <figure class="highlight cs"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[HttpGet, Route(<span class="string">"models"</span>)]</div><div class="line"><span class="function"><span class="keyword">public</span> IEnumerable&lt;VehicleModel&gt; <span class="title">GetModels</span>(<span class="params">[FromUri] <span class="keyword">string</span> brandName</span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> service = Factory.VehicleCatalogRepository();</div><div class="line">    <span class="keyword">return</span> service.GetModelsBy(brandName);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title">VehicleModel</span> &#123;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> ModelId &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">string</span> Description &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> Active &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> <span class="keyword">bool</span> IsAVersion &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">    <span class="keyword">public</span> Dictionary&lt;<span class="keyword">string</span>, Category&gt; Categories &#123; <span class="keyword">get</span>; <span class="keyword">private</span> <span class="keyword">set</span>; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Vemos que devuelve una lista de objetos <em>VehicleModel</em>. Para crear un test de contrato para este controlador podemos utilizar Pester de la siguiente manera.</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">Describe <span class="string">"Vehicle Model Contract"</span> &#123;</div><div class="line"></div><div class="line">    It <span class="string">"should get models"</span> &#123;</div><div class="line">        <span class="variable">$url</span> = <span class="string">"https://tu.dominio.com/v1/models?brandName=VOLKSWAGEN"</span></div><div class="line">        <span class="variable">$dummyToken</span> = <span class="number">0123456789</span></div><div class="line">        <span class="variable">$headers</span> = @&#123;<span class="string">"Client-Token"</span>=<span class="variable">$dummyToken</span>; <span class="string">"Content-Type"</span>=<span class="string">"application/json"</span> &#125;</div><div class="line"></div><div class="line">        <span class="variable">$response</span> = <span class="built_in">Invoke-RestMethod</span> -Uri <span class="variable">$url</span> -Method <span class="variable">$method</span> -Headers <span class="variable">$headers</span> -ErrorAction SilentlyContinue</div><div class="line"></div><div class="line">        <span class="variable">$response</span>.Count | Should Not Be <span class="number">0</span></div><div class="line">        <span class="variable">$response</span>[<span class="number">0</span>] | Should HasOnlyProperties (<span class="string">'ModelId'</span>, <span class="string">'Description'</span>, <span class="string">'Active'</span>, <span class="string">'IsAVersion'</span>, <span class="string">'Categories'</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>En este caso se ha implementado <em>HasOnlyProperties</em> como un <em>Assert</em> de <em>Pester</em>. Esto nos permite tener información detallada en caso de rojo y que se muestren las propiedades de la respuesta en el mensaje en caso de que el test no pase.</p>
+<p>Para el assert se ha implementado <em>HasOnlyProperties</em> como un <em>Assert</em> de <em>Pester</em>. Se podría utilizar una función normal para la comparación y utilizar el <em>Should Be $true</em> en el assert, pero la implementación elegida nos permite tener información detallada en caso de rojo y que se muestren las propiedades de la respuesta en el mensaje en caso de que el test no pase.</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#HasOnlyProperties</span></div><div class="line"><span class="keyword">function</span> PesterHasOnlyProperties(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">    <span class="variable">$properties</span> = <span class="keyword">foreach</span> (<span class="variable">$property</span> <span class="keyword">in</span> <span class="variable">$value</span>.PSObject.Properties) &#123; <span class="variable">$property</span>.Name  &#125;</div><div class="line">    <span class="variable">$differences</span> = <span class="built_in">Compare-Object</span> <span class="variable">$properties</span> <span class="variable">$expected</span></div><div class="line">    <span class="keyword">if</span> (<span class="variable">$differences</span>) &#123;<span class="keyword">return</span> <span class="literal">$false</span>&#125;</div><div class="line">    <span class="keyword">return</span> <span class="literal">$true</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> PesterHasOnlyPropertiesFailureMessage(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">    <span class="variable">$properties</span> = <span class="variable">$value</span>.PSObject.Properties.Name</div><div class="line">    <span class="keyword">return</span> <span class="string">"Expected: &#123;<span class="variable">$expected</span>&#125;`nBut was:  &#123;<span class="variable">$properties</span>&#125;"</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">function</span> NotPesterHasOnlyPropertiesFailureMessage(<span class="variable">$value</span>, <span class="variable">$expected</span>) &#123;</div><div class="line">	<span class="variable">$properties</span> = <span class="variable">$value</span>.PSObject.Properties.Name</div><div class="line">	<span class="keyword">return</span> <span class="string">"Expected: &#123;<span class="variable">$properties</span>&#125;`nNot to have only the following properties: &#123;<span class="variable">$expected</span>&#125;"</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>Por último solo nos falta invocar el test</p>
 <figure class="highlight powershell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Invoke-Pester -PassThru -OutputFormat NUnitXml -Script @&#123; Path = <span class="variable">$path_of_the_test</span>; &#125;</div></pre></td></tr></table></figure>
@@ -92,14 +135,12 @@
 	<article>
 	
 	<h1>
-		<a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/">
-			Tests de salud con ASP.Net y PowerShell
-		</a>
+		<a href="/2016/11/21/Tests-de-salud-con-ASP.Net-y-PowerShell/">Tests de salud con ASP.Net y PowerShell</a>
 	</h1>
 	
 	<div class="article__infos">
 		<span class="article__date">
-			2016-11-21
+			21-11-2016
 		</span><br />
 		
 		
@@ -152,13 +193,9 @@
 	
 </article>
 
-
-
-	<span class="different-posts">📕 end of posts 📕</span>
-
+-->
 
 	</main>
-
 	<footer class="footer">
 	<div class="footer-content">
 		
@@ -186,7 +223,6 @@
 		</div>
 	</div>
 </footer>
-
 </body>
 
 </html>
